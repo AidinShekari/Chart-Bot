@@ -6,8 +6,8 @@ This Discord bot monitors network usage using `vnstat`, generates charts, and po
 
 1. **Clone the Repository:**
     ```bash
-    git clone https://github.com/your-username/discord-network-usage-bot.git
-    cd discord-network-usage-bot
+    git clone https://github.com/AidinShekari/chart-bot.git
+    cd chart-bot
     ```
 
 2. **Install Dependencies:**
