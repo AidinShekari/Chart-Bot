@@ -24,5 +24,3 @@ This Discord bot monitors network usage using `vnstat`, generates charts, and po
     ```bash
     node index.js
     ```
-
-Enjoy your bot! 🎉
