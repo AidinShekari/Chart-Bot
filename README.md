@@ -15,12 +15,7 @@ This Discord bot monitors network usage using `vnstat`, generates charts, and po
     npm install
     ```
 
-3. **Ensure Charts Directory Exists:**
-    ```bash
-    mkdir -p charts
-    ```
-
-4. **Run the Bot:**
+3. **Run the Bot:**
     ```bash
     node index.js
     ```
