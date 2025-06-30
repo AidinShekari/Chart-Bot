@@ -1,8 +1,7 @@
 const { Client, Intents } = require('discord.js');
 const { exec } = require('child_process');
 const fs = require('fs');
-const { createCanvas } = require('canvas');
-const Chart = require('chart.js');
+const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
 const { DateTime } = require('luxon');
 const path = require('path');
 
@@ -136,29 +135,20 @@ function convertToGB(value, unit) {
 }
 
 async function generateChart(hourlyData) {
-  const canvas = createCanvas(600, 400);
-  const ctx = canvas.getContext('2d');
+  const width = 600;
+  const height = 400;
+  const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height, backgroundColour: 'rgba(0,0,0,0.5)' });
 
   const labels = hourlyData.map(item => item.Time);
   const data = hourlyData.map(item => parseFloat(item.Total_Data));
 
-  const backgroundColorPlugin = {
-    id: 'customCanvasBackgroundColor',
-    beforeDraw: (chart) => {
-      const ctx = chart.ctx;
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-      ctx.fillRect(0, 0, chart.width, chart.height);
-    }
-  };
-
-  new Chart(ctx, {
+  const configuration = {
     type: 'line',
-    plugins: [backgroundColorPlugin],
     data: {
-      labels: labels,
+      labels,
       datasets: [{
         label: 'Total Data (GB)',
-        data: data,
+        data,
         borderColor: 'rgba(33, 145, 81, 1)',
         backgroundColor: 'rgba(33, 145, 81, 0.2)',
         fill: true,
@@ -189,7 +179,6 @@ async function generateChart(hourlyData) {
           },
           ticks: {
             color: '#ffffff',
-            stepSize: 1,
             beginAtZero: true
           }
         }
@@ -202,10 +191,10 @@ async function generateChart(hourlyData) {
         }
       }
     }
-  });
+  };
 
+  const buffer = await chartJSNodeCanvas.renderToBuffer(configuration);
   const chartPath = 'chart.png';
-  const buffer = canvas.toBuffer('image/png');
   fs.writeFileSync(chartPath, buffer);
   return chartPath;
 }
